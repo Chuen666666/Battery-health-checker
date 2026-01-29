@@ -3,17 +3,17 @@ Battery Health Tray 是一個 Windows 系統匣小工具，用來顯示筆電的
 程式為單一可執行檔，不需要安裝 Python 或任何額外環境。
 
 # Features
-• 在系統匣顯示電池健康度百分比
-• 滑鼠懸停可查看詳細電池資訊
-• 支援手動立即更新
-• 一鍵產生 Windows 官方 battery-report.html
-• 背景執行，低資源占用
+- 在系統匣顯示電池健康度百分比
+- 滑鼠懸停可查看詳細電池資訊
+- 支援手動立即更新
+- 一鍵產生 Windows 官方 battery-report.html
+- 背景執行，低資源占用
 
 # Supported Platforms
-• Windows 10
-• Windows 11
-• 需為具備電池的裝置並支援 WMI
-• 不支援 macOS、Linux 與一般桌上型電腦。
+- Windows 10
+- Windows 11
+- 需為具備電池的裝置並支援 WMI
+- 不支援 macOS、Linux 與一般桌上型電腦。
 
 # Download
 請前往本專案的 GitHub Releases 頁面，下載最新版本的執行檔：
@@ -31,18 +31,18 @@ BatteryHealthTray.exe
 
 # View Details
 將滑鼠游標移到系統匣圖示上，可查看以下資訊：
-• Battery health percentage
-• Full charge capacity
-• Design capacity
-• Last update time
+- Battery health percentage
+- Full charge capacity
+- Design capacity
+- Last update time
 
 # Context Menu
 在系統匣圖示上按右鍵，可使用以下功能：
-• 立即更新
-• 立即重新讀取電池資訊
-• 產生 battery-report.html
+- 立即更新
+- 立即重新讀取電池資訊
+- 產生 battery-report.html
   使用 Windows powercfg 指令產生官方電池報告，並自動開啟
-• 離開
+- 離開
   結束程式
 
 # Security Notice
