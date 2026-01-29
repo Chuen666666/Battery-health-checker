@@ -2,6 +2,7 @@ import os
 import subprocess
 import threading
 from datetime import datetime
+from typing import Any
 
 import pystray
 import wmi
@@ -9,7 +10,8 @@ from PIL import Image, ImageDraw, ImageFont
 from pystray import MenuItem as item  # noqa: N813
 
 
-UPDATE_SECONDS, ICON_SIZE = 3600, 32
+UPDATE_SECONDS = 3600
+ICON_SIZE = 32
 FONTS = (
     r'C:\Windows\Fonts\segoeui.ttf',
     r'C:\Windows\Fonts\SegoeUI.ttf',
@@ -17,15 +19,15 @@ FONTS = (
 )
 
 
-def battery():
+def battery() -> tuple[int | None, int | None, int | None]:
     try:
         c = wmi.WMI(namespace=r'root\wmi')
-        design = sum(
+        design: int = sum(
             int(s.DesignedCapacity)
             for s in c.BatteryStaticData()
             if getattr(s, 'DesignedCapacity', None) is not None
         )
-        full = sum(
+        full: int = sum(
             int(f.FullChargedCapacity)
             for f in c.BatteryFullChargedCapacity()
             if getattr(f, 'FullChargedCapacity', None) is not None
@@ -38,7 +40,7 @@ def battery():
         return None, None, None
 
 
-def icon_img(text):
+def icon_img(text: str) -> Image.Image:
     img = Image.new('RGBA', (ICON_SIZE, ICON_SIZE), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     d.rounded_rectangle(
@@ -63,7 +65,7 @@ def icon_img(text):
 
 
 class Tray:
-    def __init__(self):
+    def __init__(self) -> None:
         self.stop = threading.Event()
         self.icon = pystray.Icon('BatteryHealth')
         self.icon.menu = pystray.Menu(
@@ -72,7 +74,7 @@ class Tray:
             item('離開', self.quit),
         )
 
-    def update(self, *_):
+    def update(self, *_: Any) -> None:
         h, full, design = battery()
         text = '??' if h is None else str(h)
         tip = (
@@ -84,12 +86,12 @@ class Tray:
         )
         self.icon.icon, self.icon.title = icon_img(text), tip
 
-    def loop(self):
+    def loop(self) -> None:
         self.update()
         while not self.stop.wait(UPDATE_SECONDS):
             self.update()
 
-    def report(self, *_):
+    def report(self, *_: Any) -> None:
         try:
             out = os.path.join(os.path.expanduser('~'), 'battery-report.html')
             subprocess.run(['powercfg', '/batteryreport', '/output', out], check=False)
@@ -97,11 +99,11 @@ class Tray:
         except Exception as e:
             self.icon.title = str(e)
 
-    def quit(self, *_):
+    def quit(self, *_: Any) -> None:
         self.stop.set()
         self.icon.stop()
 
-    def run(self):
+    def run(self) -> None:
         threading.Thread(target=self.loop, daemon=True).start()
         self.icon.run()
 
